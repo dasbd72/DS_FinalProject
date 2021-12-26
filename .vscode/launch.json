@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "(Win) run",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "preLaunchTask": "Build_workspaceFolder",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}\\a.exe",
+      "stopAtEntry": false,
+      "console": "externalTerminal"
+    },
+    {
+      "name": "(Win) dbg",
+      "type": "cppdbg",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}\\a.exe",
+      "stopAtEntry": false,
+      "console": "externalTerminal",
+      "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe",
+      "preLaunchTask": "Build_workspaceFolder"
+    },
+    {
+      "name": "(linux) run",
+      "type": "cppdbg",
+      "request": "launch",
+      "preLaunchTask": "(linux)Build_workspaceFolder",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/a",
+      "stopAtEntry": false
+    }
+  ]
+}
