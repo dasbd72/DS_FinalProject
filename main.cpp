@@ -1,80 +1,68 @@
 #define FILE_EXTENSION ".txt"
 
-#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
+#include "search_tree.hpp"
 #include "utilities.hpp"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
     string data_dir = argv[1] + string("/");
-    string query = string(argv[2]);
-    string output = string(argv[3]);
+    string query_path = string(argv[2]);
+    string output_path = string(argv[3]);
 
-    fstream fi;
-    int data_idx = 100;
-    while (filesystem::exists(data_dir + to_string(data_idx) + FILE_EXTENSION)) {
-        string file, title_str, content_str;
-        fi.open(data_dir + to_string(data_idx) + FILE_EXTENSION, ios::in);
-        getline(fi, title_str);
-        vector<string> title;
-        title = word_parse(split(title_str, " "));
+    vector<search_tree*> datas;
+    for (int data_idx = 0; filesystem::exists(data_dir + to_string(data_idx) + FILE_EXTENSION); data_idx++) {
+        fstream data_file;
+        string title_str, content_str;
+        search_tree* searchTree = new search_tree();
 
-        while (getline(fi, content_str)) {
+        // Open file
+        data_file.open(data_dir + to_string(data_idx) + FILE_EXTENSION, ios::in);
+
+        // Process title
+        getline(data_file, title_str);
+        searchTree->title = word_parse(split(title_str, " "));
+
+        while (getline(data_file, content_str)) {
             vector<string> content;
             content = word_parse(split(content_str, " "));
-            for (auto& word : content) {
-                cout << word << endl;
+            for (auto& word : content)
+                searchTree->insert(lower_str(word));
+        }
+        data_file.close();
+        datas.push_back(searchTree);
+    }
+    {
+        string query_line;
+        fstream query_file, output_file;
+        query_file.open(query_path, ios::in);
+        output_file.open(output_path, ios::out);
+
+        while (getline(query_file, query_line, '\n')) {
+            vector<string> query = split(query_line, " ");
+
+            for (auto& data : datas) {
+                if (data->search(query)) {
+                    // Output title if matches
+                    auto it = data->title.begin();
+                    output_file << *it;
+                    for (++it; it != data->title.end(); ++it)
+                        output_file << " " + *it;
+                    output_file << "\n";
+                }
             }
         }
-        fi.close();
-        data_idx++;
+        output_file.flush();
+
+        query_file.close();
+        output_file.close();
     }
-
-    // Read File & Parser Example
-
-    // string file, title_name, tmp;
-    // fstream fi;
-    // vector<string> tmp_string;
-
-    // // from data_dir get file ....
-    // // eg : use 0.txt in data directory
-    // fi.open("data/0.txt", ios::in);
-
-    // // GET TITLENAME
-    // getline(fi, title_name);
-
-    // // GET TITLENAME WORD ARRAY
-    // tmp_string = split(title_name, " ");
-
-    // vector<string> title = word_parse(tmp_string);
-
-    // // for(auto &word : title){
-    // // 	cout << word << endl;
-    // // }
-
-    // // GET CONTENT LINE BY LINE
-    // while(getline(fi, tmp)){
-
-    //     // GET CONTENT WORD VECTOR
-    // 	tmp_string = split(tmp, " ");
-
-    // 	// PARSE CONTENT
-    // 	vector<string> content = word_parse(tmp_string);
-
-    // 	for(auto &word : content){
-    // 		cout << word << endl;
-    // 	}
-    // 	//......
-    // }
-
-    // // CLOSE FILE
-    // fi.close();
 }
 
 // 1. UPPERCASE CHARACTER & LOWERCASE CHARACTER ARE SEEN AS SAME.
