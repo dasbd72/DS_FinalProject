@@ -6,35 +6,18 @@
       "label": "Build_workspaceFolder",
       "command": "g++",
       "args": [
-        "-Wall",
-        "-Wextra",
-        "'-std=c++17'",
-        "-O2",
-        "-g",
-        "'${fileDirname}\\${fileBasename}'",
+        "-std=c++17",
         "-o",
-        "'${workspaceFolder}\\a.exe'"
+        "'${workspaceFolder}\\essay-search.exe'",
+        "-g",
+        "'${workspaceFolder}\\*.cpp'",
+        "-lstdc++fs"
       ],
       "problemMatcher": ["$gcc"],
       "group": {
         "kind": "build",
         "isDefault": true
       }
-    },
-    {
-      "type": "shell",
-      "label": "(linux)Build_workspaceFolder",
-      "command": "g++",
-      "args": [
-        "-Wall",
-        "'-std=c++17'",
-        "-g",
-        "'${fileDirname}/${fileBasename}'",
-        "-o",
-        "'${workspaceFolder}/a'"
-      ],
-      "problemMatcher": ["$gcc"],
-      "group": "build"
     }
   ]
 }
