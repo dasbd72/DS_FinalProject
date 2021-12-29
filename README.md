@@ -15,3 +15,10 @@
 - `*Word*` : suffix search
 - `\+` : and
 - `/` : or
+
+## Method
+
+- Data Structure : trie
+- Optimization
+  - Parse query from right
+  - build two tries

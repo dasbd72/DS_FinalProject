@@ -42,11 +42,11 @@ void trie::insert(const std::string &str) {
 
 bool trie::search(const std::string &str) {
     if (*str.begin() == '"') {
-        return this->search_prefix(str.substr(1, str.length() - 2));
+        return this->search_exact(str.substr(1, str.length() - 2));
     } else if (*str.begin() == '*') {
         return this->search_suffix(str.substr(1, str.length() - 2));
     } else {
-        return this->search_exact(str);
+        return this->search_prefix(str);
     }
 }
 

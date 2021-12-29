@@ -46,6 +46,9 @@ int main(int argc, char* argv[]) {
 
         while (getline(query_file, query_line, '\n')) {
             vector<string> query = split(query_line, " ");
+            for (auto& data : query)
+                for (auto& c : data)
+                    c = tolower(c);
 
             for (auto& data : datas) {
                 if (data->search(query)) {
@@ -64,13 +67,3 @@ int main(int argc, char* argv[]) {
         output_file.close();
     }
 }
-
-// 1. UPPERCASE CHARACTER & LOWERCASE CHARACTER ARE SEEN AS SAME.
-// 2. FOR SPECIAL CHARACTER OR DIGITS IN CONTENT OR TITLE -> PLEASE JUST IGNORE, YOU WONT NEED TO CONSIDER IT.
-//    EG : "AB?AB" WILL BE SEEN AS "ABAB", "I AM SO SURPRISE!" WILL BE SEEN AS WORD ARRAY AS ["I", "AM", "SO", "SURPRISE"].
-// 3. THE OPERATOR IN "QUERY.TXT" IS LEFT ASSOCIATIVE
-//    EG : A + B / C == (A + B) / C
-
-//
-
-//////////////////////////////////////////////////////////
