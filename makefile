@@ -40,24 +40,21 @@ endif
 ifeq ($(detected_OS),Linux)
 # sudo apt-get update
 CXX = g++
-ODIR = obj\linux
-EXE = TowerDefense
+ODIR = obj/linux
+EXE = essay-search
 
 SRC  := $(wildcard *.cpp)
 OBJ  := $(SRC:%.cpp=$(ODIR)/%.o)
-ALLEGRO_LIBRARIES := allegro-5 allegro_main-5 allegro_font-5 allegro_color-5 allegro_image-5 allegro_acodec-5 allegro_audio-5 allegro_dialog-5 allegro_memfile-5 allegro_physfs-5 allegro_primitives-5 allegro_ttf-5 allegro_video-5
-ALLEGRO_FLAGS := $(shell pkg-config --cflags --libs $(ALLEGRO_LIBRARIES))
 
-CXXFLAGS = -std=c++11 -O2
-LDFLAGS = -lm -Wall -Wextra
+CXXFLAGS = -std=c++17 -lstdc++fs
 
 .PHONY: all
 all: $(OBJ)
-	$(CXX) -o $(EXE) $(OBJ) $(ALLEGRO_FLAGS) $(CXXFLAGS) $(LDFLAGS)
+	$(CXX) -o $(EXE) $(OBJ) $(CXXFLAGS)
 %.o: %.cpp
-	$(CXX) -c $< -o $(ODIR)/$@ $(ALLEGRO_FLAGS) $(CXXFLAGS)
+	$(CXX) -c $< -o $(ODIR)/$@ $(CXXFLAGS)
 $(OBJ): $(ODIR)/%.o: %.cpp
-	$(CXX) -c $< -o $@ $(ALLEGRO_FLAGS) $(CXXFLAGS)
+	$(CXX) -c $< -o $@ $(CXXFLAGS)
 clean:
 	rm $(EXE) $(OBJ)
 run:
@@ -70,18 +67,17 @@ ifeq ($(detected_OS),Darwin)
 # brew install allegro
 # brew install pkg-config
 CXX = g++
-ODIR = obj
-EXE = TowerDefense
+ODIR = obj/macos
+EXE = essay-search
 
 SRC  := $(wildcard *.cpp)
 OBJ  := $(SRC:%.cpp=$(ODIR)/%.o)
-CXXFLAGS = -std=c++11 -O2 `pkg-config allegro-5 --cflags`
-LDFLAGS = -lm -Wall -Wextra
-LDLIBS = `pkg-config allegro-5 allegro_acodec-5 allegro_audio-5 allegro_color-5 allegro_dialog-5 allegro_font-5 allegro_image-5 allegro_main-5 allegro_memfile-5 allegro_physfs-5 allegro_primitives-5 allegro_ttf-5 allegro_video-5 --libs`
+
+CXXFLAGS = -std=c++17 -lstdc++fs
 
 .PHONY: all clean run
 all: $(OBJ)
-	$(CXX) -o $(EXE) $(OBJ) $(LDFLAGS) $(LDLIBS)
+	$(CXX) -o $(EXE) $(OBJ) $(CXXFLAGS)
 %.o: %.cpp
 	$(CXX) -c $< -o $(ODIR)/$@ $(CXXFLAGS)
 $(OBJ): $(ODIR)/%.o: %.cpp

@@ -80,4 +80,10 @@ int main(int argc, char* argv[]) {
         output_file.close();
     }
 }
-// mingw32-make.exe all ; .\essay-search.exe data-more .\querry\query-more.txt output.txt;
+/* 
+mingw32-make.exe all
+.\essay-search.exe data-more .\querry\query-more.txt output.txt
+
+make all
+./essay-search data-more ./querry/query-more.txt output.txt
+*/
