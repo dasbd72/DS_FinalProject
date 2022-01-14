@@ -1,5 +1,8 @@
 #define FILE_EXTENSION ".txt"
 
+// #include <stdio.h>
+// #include <time.h>
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -12,11 +15,15 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
+    // clock_t t;
+    // t = clock();
+
     string data_dir = argv[1] + string("/");
     string query_path = string(argv[2]);
     string output_path = string(argv[3]);
 
     vector<search_tree*> datas;
+
     for (int data_idx = 0; filesystem::exists(data_dir + to_string(data_idx) + FILE_EXTENSION); data_idx++) {
         fstream data_file;
         string title_str, content_str;
@@ -79,6 +86,9 @@ int main(int argc, char* argv[]) {
         query_file.close();
         output_file.close();
     }
+    // t = clock() - t;
+    // double time_taken = ((double)t) / CLOCKS_PER_SEC;
+    // printf("The program took %f seconds to execute\n", time_taken);
 }
 /* 
 mingw32-make.exe all

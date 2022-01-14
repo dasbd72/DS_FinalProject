@@ -8,55 +8,48 @@ endif
 #################### Windows ####################
 ifeq ($(detected_OS),Windows)
 CXX = g++
-ODIR = obj\windows
+OBJDIR = obj/windows
+SRCDIR = src
 EXE = essay-search
-
-SRC  := $(wildcard *.cpp)
-OBJ  := $(SRC:%.cpp=$(ODIR)\\%.o)
-
 CXXFLAGS = -std=c++17 -lstdc++fs
+
+SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
+INCLUDES := $(wildcard $(SRCDIR)/*.hpp)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 .PHONY: all dbg clean run run-dbg 
 
-all: $(OBJ)
-	$(CXX) -o $(EXE).exe $(OBJ) $(CXXFLAGS)
-%.o: %.cpp
-	$(CXX) -c $< -o $(ODIR)\$@ $(CXXFLAGS) 
-$(OBJ): $(ODIR)\\%.o: %.cpp
+all: $(OBJECTS)
+	$(CXX) -o $(EXE).exe $(OBJECTS) $(CXXFLAGS)
+$(OBJECTS): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
-dbg:
-	$(CXX) -g $(SRC) -o $(EXE)_dbg.exe $(CXXFLAGS) 
 clean:
-	del $(EXE).exe $(EXE)_dbg.exe $(ODIR)\*.o
+	del $(EXE).exe $(OBJDIR)/*.o
 run:
 	make all
-	.\\$(EXE).exe
-run-dbg:
-	make dbg
-	gdb .\\$(EXE)_dbg.exe
-
+	./$(EXE).exe
 endif
 #################### Linux ####################
 ifeq ($(detected_OS),Linux)
 # sudo apt-get update
 CXX = g++
-ODIR = obj/linux
+OBJDIR = obj/linux
+SRCDIR = src
 EXE = essay-search
-
-SRC  := $(wildcard *.cpp)
-OBJ  := $(SRC:%.cpp=$(ODIR)/%.o)
-
 CXXFLAGS = -std=c++17 -lstdc++fs
 
+SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
+INCLUDES := $(wildcard $(SRCDIR)/*.hpp)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+
 .PHONY: all
-all: $(OBJ)
-	$(CXX) -o $(EXE) $(OBJ) $(CXXFLAGS)
-%.o: %.cpp
-	$(CXX) -c $< -o $(ODIR)/$@ $(CXXFLAGS)
-$(OBJ): $(ODIR)/%.o: %.cpp
+
+all: $(OBJECTS)
+	$(CXX) -o $(EXE) $(OBJECTS) $(CXXFLAGS)
+$(OBJECTS): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 clean:
-	rm $(EXE) $(OBJ)
+	rm $(EXE) $(OBJECTS)
 run:
 	make all
 	./$(EXE)
@@ -64,26 +57,24 @@ endif
 #################### MacOS ####################
 ifeq ($(detected_OS),Darwin)
 # brew install make
-# brew install allegro
-# brew install pkg-config
 CXX = g++
-ODIR = obj/macos
+OBJDIR = obj/macos
 EXE = essay-search
 
-SRC  := $(wildcard *.cpp)
-OBJ  := $(SRC:%.cpp=$(ODIR)/%.o)
+SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
+INCLUDES := $(wildcard $(SRCDIR)/*.hpp)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 CXXFLAGS = -std=c++17 -lstdc++fs
 
 .PHONY: all clean run
-all: $(OBJ)
-	$(CXX) -o $(EXE) $(OBJ) $(CXXFLAGS)
-%.o: %.cpp
-	$(CXX) -c $< -o $(ODIR)/$@ $(CXXFLAGS)
-$(OBJ): $(ODIR)/%.o: %.cpp
+
+all: $(OBJECTS)
+	$(CXX) -o $(EXE) $(OBJECTS) $(CXXFLAGS)
+$(OBJECTS): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 clean:
-	rm -rf $(OBJ) $(EXE)
+	rm -rf $(EXE) $(OBJECTS)
 run:
 	make all
 	./$(EXE)
