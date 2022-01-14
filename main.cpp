@@ -27,16 +27,24 @@ int main(int argc, char* argv[]) {
 
         // Process title
         getline(data_file, title_str);
-        searchTree->title = word_parse(split(title_str, " "));
+        searchTree->title = split(title_str, " ");
 
+        // Insert Title
+        vector<string> title;
+        title = word_parse(searchTree->title);
+        for (auto& word : title)
+            searchTree->insert(lower_str(word));
+        // Insert Contents
         while (getline(data_file, content_str)) {
             vector<string> content;
             content = word_parse(split(content_str, " "));
             for (auto& word : content)
                 searchTree->insert(lower_str(word));
         }
-        data_file.close();
+
         datas.push_back(searchTree);
+        // Close File
+        data_file.close();
     }
     {
         string query_line;
@@ -45,6 +53,8 @@ int main(int argc, char* argv[]) {
         output_file.open(output_path, ios::out);
 
         while (getline(query_file, query_line, '\n')) {
+            bool found = false;
+            // output_file << query_line << "\n";
             vector<string> query = split(query_line, " ");
             for (auto& data : query)
                 for (auto& c : data)
@@ -52,6 +62,7 @@ int main(int argc, char* argv[]) {
 
             for (auto& data : datas) {
                 if (data->search(query)) {
+                    found = true;
                     // Output title if matches
                     auto it = data->title.begin();
                     output_file << *it;
@@ -60,6 +71,8 @@ int main(int argc, char* argv[]) {
                     output_file << "\n";
                 }
             }
+            if (!found)
+                output_file << "Not Found!\n";
         }
         output_file.flush();
 
@@ -67,3 +80,4 @@ int main(int argc, char* argv[]) {
         output_file.close();
     }
 }
+// mingw32-make.exe all ; .\essay-search.exe data-more .\querry\query-more.txt output.txt;
