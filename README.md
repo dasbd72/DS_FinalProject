@@ -22,3 +22,8 @@
 - Optimization
   - Parse query from right
   - build two tries
+
+
+## Versions
+
+- Beta 1 : 1/18 12:51

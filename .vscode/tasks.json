@@ -10,7 +10,7 @@
         "-o",
         "'${workspaceFolder}\\essay-search.exe'",
         "-g",
-        "'${workspaceFolder}\\*.cpp'",
+        "'${workspaceFolder}\\src\\*.cpp'",
         "-lstdc++fs"
       ],
       "problemMatcher": ["$gcc"],

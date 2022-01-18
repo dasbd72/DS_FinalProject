@@ -1,28 +1,28 @@
-// {
-//   "version": "0.2.0",
-//   "configurations": [
-//     {
-//       "name": "(Win) run",
-//       "type": "cppvsdbg",
-//       "request": "launch",
-//       "preLaunchTask": "Build_workspaceFolder",
-//       "cwd": "${workspaceFolder}",
-//       "program": "${workspaceFolder}\\main.exe",
-//       "args": [],
-//       "stopAtEntry": false,
-//       "console": "externalTerminal"
-//     },
-//     {
-//       "name": "(Win) dbg",
-//       "type": "cppdbg",
-//       "request": "launch",
-//       "cwd": "${workspaceFolder}",
-//       "program": "${workspaceFolder}\\main.exe",
-//       "args": [],
-//       "stopAtEntry": false,
-//       "console": "externalTerminal",
-//       "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe",
-//       "preLaunchTask": "Build_workspaceFolder"
-//     }
-//   ]
-// }
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "(Win) run",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "preLaunchTask": "Build_workspaceFolder",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}\\essay-search.exe",
+      "args": ["data-more", ".\\querry\\query-more.txt", "output.txt"],
+      "stopAtEntry": false,
+      "console": "externalTerminal"
+    },
+    {
+      "name": "(Win) dbg",
+      "type": "cppdbg",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}\\essay-search.exe",
+      "args": ["data-more", ".\\querry\\query-more.txt", "output.txt"],
+      "stopAtEntry": false,
+      "console": "externalTerminal",
+      "miDebuggerPath": "C:\\msys64\\mingw64\\bin\\gdb.exe",
+      "preLaunchTask": "Build_workspaceFolder"
+    }
+  ]
+}

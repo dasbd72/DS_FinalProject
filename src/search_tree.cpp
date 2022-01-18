@@ -1,49 +1,65 @@
 #include "search_tree.hpp"
 
+#include <algorithm>
 #include <iostream>
+#include <list>
 #include <string>
 #include <vector>
 
 #include "trie.hpp"
+#include "utilities.hpp"
 
-void search_tree::insert(const std::string& word) {
-    this->mytrie.insert(word);
+void search_tree::insert(const std::string& word, const int& index) {
+    this->mytrie.insert(word, index);
 }
 
-bool search_tree::search(const std::vector<std::string>& query) {
-    // Recursion
-    return search_recursion(query, query.size() - 1);
-
+std::list<int> search_tree::search(const std::vector<std::string>& query) {
     // Sequential
-    // int qsize = query.size();
-    // if (qsize == 0)
-    //     return false;
-    // bool result = this->mytrie.search(query[0]);
-    // for (int i = 1; i < qsize; i += 2) {
-    //     while ((result && query[i] == "/") || (!result && query[i] == "+")) {
-    //         i += 2;
-    //     }
-    //     if (i < qsize) {
-    //         result = this->mytrie.search(query[i + 1]);
-    //     }
-    // }
-    // return result;
-}
+    int qsize = query.size();
+    if (qsize == 0)
+        return std::list<int>();
+    std::list<int> search_result;
+    std::list<int> answer;
 
-bool search_tree::search_recursion(const std::vector<std::string>& query, int pos) {
-    bool rchild_result = this->mytrie.search(query[pos]);
-    if (pos - 2 >= 0) {
-        if (query[pos - 1] == "+") {
-            if (!rchild_result)
-                return false;
-            else
-                return this->search_recursion(query, pos - 2);
+    answer = this->mytrie.search(query[0]);
+    for (int i = 1; i < qsize; i += 2) {
+        search_result = this->mytrie.search(query[i + 1]);
+        if (query[i] == "/") {
+            auto it_search = search_result.begin();
+            auto it_answer = answer.begin();
+            while (it_answer != answer.end() && it_search != search_result.end()) {
+                if (*it_answer < *it_search) {
+                    ++it_answer;
+                } else if (*it_answer == *it_search) {
+                    ++it_answer;
+                    ++it_search;
+                } else {
+                    answer.insert(it_answer, *it_search);
+                    ++it_search;
+                }
+            }
+            while (it_search != search_result.end()) {
+                answer.insert(it_answer, *it_search);
+                ++it_search;
+            }
         } else {
-            if (rchild_result)
-                return true;
-            else
-                return this->search_recursion(query, pos - 2);
+            auto it_search = search_result.begin();
+            auto it_answer = answer.begin();
+            while (it_answer != answer.end() && it_search != search_result.end()) {
+                if (*it_answer < *it_search) {
+                    it_answer = answer.erase(it_answer);
+                } else if (*it_answer == *it_search) {
+                    ++it_answer;
+                    ++it_search;
+                } else {
+                    ++it_search;
+                }
+            }
+            while (it_answer != answer.end()) {
+                it_answer = answer.erase(it_answer);
+            }
         }
-    } else
-        return rchild_result;
+    }
+
+    return answer;
 }

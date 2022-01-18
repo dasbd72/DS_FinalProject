@@ -22,34 +22,33 @@ int main(int argc, char* argv[]) {
     string query_path = string(argv[2]);
     string output_path = string(argv[3]);
 
-    vector<search_tree*> datas;
+    std::vector<std::vector<std::string>> titles;
+    search_tree datas;
 
     for (int data_idx = 0; std::experimental::filesystem::exists(data_dir + to_string(data_idx) + FILE_EXTENSION); data_idx++) {
         fstream data_file;
         string title_str, content_str;
-        search_tree* searchTree = new search_tree();
+        vector<string> title;
 
         // Open file
         data_file.open(data_dir + to_string(data_idx) + FILE_EXTENSION, ios::in);
 
         // Process title
         getline(data_file, title_str);
-        searchTree->title = split(title_str, " ");
+        title = split(title_str, " ");
+        titles.push_back(title);
 
         // Insert Title
-        vector<string> title;
-        title = word_parse(searchTree->title);
+        title = word_parse(title);
         for (auto& word : title)
-            searchTree->insert(lower_str(word));
+            datas.insert(lower_str(word), data_idx);
         // Insert Contents
         while (getline(data_file, content_str)) {
             vector<string> content;
             content = word_parse(split(content_str, " "));
             for (auto& word : content)
-                searchTree->insert(lower_str(word));
+                datas.insert(lower_str(word), data_idx);
         }
-
-        datas.push_back(searchTree);
         // Close File
         data_file.close();
     }
@@ -67,19 +66,19 @@ int main(int argc, char* argv[]) {
                 for (auto& c : data)
                     c = tolower(c);
 
-            for (auto& data : datas) {
-                if (data->search(query)) {
-                    found = true;
-                    // Output title if matches
-                    auto it = data->title.begin();
+            list<int> result = datas.search(query);
+
+            if (result.size() == 0) {
+                output_file << "Not Found!\n";
+            } else {
+                for (auto& index : result) {
+                    auto it = titles[index].begin();
                     output_file << *it;
-                    for (++it; it != data->title.end(); ++it)
+                    for (++it; it != titles[index].end(); ++it)
                         output_file << " " + *it;
                     output_file << "\n";
                 }
             }
-            if (!found)
-                output_file << "Not Found!\n";
         }
         output_file.flush();
 
