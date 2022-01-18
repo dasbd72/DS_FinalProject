@@ -2,7 +2,6 @@
 
 #include <cctype>
 #include <cstring>
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -42,17 +41,6 @@ std::vector<std::string> split(const std::string& str, const std::string& delim)
     return res;
 }
 
-std::vector<std::string> file_to_data(const std::string& filename) {
-    std::ifstream file;
-    std::vector<std::string> res;
-    std::string str;
-    file.open(filename, std::ios::in);
-    while (std::getline(file, str)) {
-        res.push_back(str);
-    }
-    file.close();
-    return res;
-}
 std::string lower_str(const std::string& str) {
     std::string new_str;
     for (auto& c : str)
