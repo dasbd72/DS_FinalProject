@@ -38,7 +38,7 @@ void trie::insert(const std::string &str, const int &index) {
         rcurr->belong_end.push_back(index);
 }
 
-std::list<int> trie::search(const std::string &str) {
+const std::list<int> &trie::search(const std::string &str) {
     if (*(str.begin()) == '"') {
         return this->search_exact(str.substr(1, str.length() - 2));
     } else if (*(str.begin()) == '*') {
@@ -48,35 +48,35 @@ std::list<int> trie::search(const std::string &str) {
     }
 }
 
-std::list<int> trie::search_exact(const std::string &str) {
+const std::list<int> &trie::search_exact(const std::string &str) {
     node *curr = this->root;
     for (auto it = str.begin(); it != str.end(); ++it) {
         if (curr->childs[(*it) - 'a'])
             curr = curr->childs[(*it) - 'a'];
         else
-            return std::list<int>();
+            return this->empty_list;
     }
     return curr->belong_end;
 }
 
-std::list<int> trie::search_prefix(const std::string &str) {
+const std::list<int> &trie::search_prefix(const std::string &str) {
     node *curr = this->root;
     for (auto it = str.begin(); it != str.end(); ++it) {
         if (curr->childs[(*it) - 'a'])
             curr = curr->childs[(*it) - 'a'];
         else
-            return std::list<int>();
+            return this->empty_list;
     }
     return curr->belong;
 }
 
-std::list<int> trie::search_suffix(const std::string &str) {
+const std::list<int> &trie::search_suffix(const std::string &str) {
     node *curr = this->reversed_root;
     for (auto rit = str.rbegin(); rit != str.rend(); ++rit) {
         if (curr->childs[(*rit) - 'a'])
             curr = curr->childs[(*rit) - 'a'];
         else
-            return std::list<int>();
+            return this->empty_list;
     }
     return curr->belong;
 }

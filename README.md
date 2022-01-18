@@ -2,7 +2,13 @@
 
 ## Compile
 
-`g++ -std=c++17 -o essay-search.exe ./\*.cpp -lstdc++fs`
+### Windows
+
+`g++ -std=c++17 -o essay-search.exe ./*.cpp -lstdc++fs`
+
+### Linux
+
+`g++ -std=c++17 -o essay-search ./src/*.cpp -lstdc++fs`
 
 ## Execute
 
@@ -22,7 +28,6 @@
 - Optimization
   - Parse query from right
   - build two tries
-
 
 ## Versions
 

@@ -7,7 +7,7 @@
 #include "trie.hpp"
 
 class search_tree {
-   public:
+   private:
     trie mytrie;
 
    public:

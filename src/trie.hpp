@@ -14,14 +14,16 @@ class trie {
     node *reversed_root;
 
     node *create_node();
-    std::list<int> search_exact(const std::string &str);
-    std::list<int> search_prefix(const std::string &str);
-    std::list<int> search_suffix(const std::string &str);
+    const std::list<int> &search_exact(const std::string &str);
+    const std::list<int> &search_prefix(const std::string &str);
+    const std::list<int> &search_suffix(const std::string &str);
 
    public:
+    std::list<int> empty_list;
+
     trie();
     ~trie(){};
     void insert(const std::string &str, const int &index);
-    std::list<int> search(const std::string &str);
+    const std::list<int> &search(const std::string &str);
 };
 #endif
