@@ -1,7 +1,7 @@
 #define FILE_EXTENSION ".txt"
 
-#include <stdio.h>
-#include <time.h>
+// #include <stdio.h>
+// #include <time.h>
 
 #include <fstream>
 #include <iostream>
@@ -14,8 +14,8 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    clock_t t;
-    t = clock();
+    // clock_t t;
+    // t = clock();
 
     string data_dir = argv[1] + string("/");
     string query_path = string(argv[2]);
@@ -86,9 +86,9 @@ int main(int argc, char* argv[]) {
         query_file.close();
         output_file.close();
     }
-    t = clock() - t;
-    double time_taken = ((double)t) / CLOCKS_PER_SEC;
-    printf("The program took %f seconds to execute\n", time_taken);
+    // t = clock() - t;
+    // double time_taken = ((double)t) / CLOCKS_PER_SEC;
+    // printf("The program took %f seconds to execute\n", time_taken);
 }
 /* 
 mingw32-make.exe all
