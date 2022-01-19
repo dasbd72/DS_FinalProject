@@ -60,6 +60,8 @@ int main(int argc, char* argv[]) {
         output_file.open(output_path, ios::out);
 
         while (getline(query_file, query_line, '\n')) {
+            if (*(query_line.rbegin()) == 13)
+                query_line.pop_back();
             bool found = false;
             // output_file << query_line << "\n";
             vector<string> query = split(query_line, " ");
@@ -93,9 +95,14 @@ int main(int argc, char* argv[]) {
 /* 
 mingw32-make.exe all
 g++ -std=c++17 -o essay-search.exe ./src/*.cpp -lstdc++fs
-.\essay-search.exe data-more .\querry\query-more.txt output.txt
+.\essay-search.exe data-more .\query\query-more.txt output.txt
+.\essay-search.exe data-more .\query\query.txt output.txt
 
 make all
-g++ -std=c++17 -o essay-search ./src/*.cpp -lstdc++fs
-./essay-search data-more ./querry/query-more.txt output.txt
+g++-7 -std=c++17 -o essay-search ./src/*.cpp -lstdc++fs
+g++-7 -std=c++17 -o essay-search ./src/*.cpp -lstdc++fs -fsanitize=address -g
+./essay-search data-more ./query/query-more.txt output.txt
+./essay-search data-more ./query/query.txt output.txt
+timeout -s SIGINT 60 ./essay-search data-more ./query/query-more.txt output.txt
+timeout -s SIGINT 60 ./essay-search data-more ./query/query.txt output.txt
 */
