@@ -103,6 +103,6 @@ g++-7 -std=c++17 -o essay-search ./src/*.cpp -lstdc++fs
 g++-7 -std=c++17 -o essay-search ./src/*.cpp -lstdc++fs -fsanitize=address -g
 ./essay-search data-more ./query/query-more.txt output.txt
 ./essay-search data-more ./query/query.txt output.txt
-timeout -s SIGINT 60 ./essay-search data-more ./query/query-more.txt output.txt
-timeout -s SIGINT 60 ./essay-search data-more ./query/query.txt output.txt
+time
+timeout -s SIGINT 60
 */
