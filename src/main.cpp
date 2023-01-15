@@ -13,10 +13,41 @@
 
 using namespace std;
 
-int main(int argc, char* argv[]) {
-    // clock_t t;
-    // t = clock();
+#ifdef DEBUG
+#define DEBUG_PRINT(fmt, args...) fprintf(stderr, fmt, ##args);
+#define DEBUG_MSG(str) std::cout << str << "\n";
+#else
+#define DEBUG_PRINT(fmt, args...)
+#define DEBUG_MSG(str)
+#endif  // DEBUG
 
+#define TIMING
+#ifdef TIMING
+#include <ctime>
+#define TIMING_START(arg)          \
+    struct timespec __start_##arg; \
+    clock_gettime(CLOCK_MONOTONIC, &__start_##arg);
+#define TIMING_END(arg)                                                                       \
+    {                                                                                         \
+        struct timespec __temp_##arg, __end_##arg;                                            \
+        double __duration_##arg;                                                              \
+        clock_gettime(CLOCK_MONOTONIC, &__end_##arg);                                         \
+        if ((__end_##arg.tv_nsec - __start_##arg.tv_nsec) < 0) {                              \
+            __temp_##arg.tv_sec = __end_##arg.tv_sec - __start_##arg.tv_sec - 1;              \
+            __temp_##arg.tv_nsec = 1000000000 + __end_##arg.tv_nsec - __start_##arg.tv_nsec;  \
+        } else {                                                                              \
+            __temp_##arg.tv_sec = __end_##arg.tv_sec - __start_##arg.tv_sec;                  \
+            __temp_##arg.tv_nsec = __end_##arg.tv_nsec - __start_##arg.tv_nsec;               \
+        }                                                                                     \
+        __duration_##arg = __temp_##arg.tv_sec + (double)__temp_##arg.tv_nsec / 1000000000.0; \
+        printf("%s took %lfs.\n", #arg, __duration_##arg);                                    \
+    }
+#else
+#define TIMING_START(arg)
+#define TIMING_END(arg)
+#endif  // TIMING
+
+int main(int argc, char* argv[]) {
     string data_dir = argv[1] + string("/");
     string query_path = string(argv[2]);
     string output_path = string(argv[3]);
@@ -24,6 +55,7 @@ int main(int argc, char* argv[]) {
     std::vector<std::vector<std::string>> titles;
     search_tree datas;
 
+    TIMING_START(build_trie);
     for (int data_idx = 0;; data_idx++) {
         fstream data_file;
         string title_str, content_str;
@@ -53,6 +85,8 @@ int main(int argc, char* argv[]) {
         // Close File
         data_file.close();
     }
+    TIMING_END(build_trie);
+    TIMING_START(query);
     {
         string query_line;
         fstream query_file, output_file;
@@ -88,11 +122,9 @@ int main(int argc, char* argv[]) {
         query_file.close();
         output_file.close();
     }
-    // t = clock() - t;
-    // double time_taken = ((double)t) / CLOCKS_PER_SEC;
-    // printf("The program took %f seconds to execute\n", time_taken);
+    TIMING_END(query);
 }
-/* 
+/*
 mingw32-make.exe all
 g++ -std=c++17 -o essay-search.exe ./src/*.cpp -lstdc++fs
 .\essay-search.exe data-more .\query\query-more.txt output.txt
