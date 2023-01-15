@@ -59,13 +59,14 @@ ifeq ($(detected_OS),Darwin)
 # brew install make
 CXX = g++
 OBJDIR = obj/macos
+SRCDIR = src
 EXE = essay-search
 
 SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
 INCLUDES := $(wildcard $(SRCDIR)/*.hpp)
 OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-CXXFLAGS = -std=c++17 -lstdc++fs
+CXXFLAGS = -std=c++17 -O2
 
 .PHONY: all clean run
 

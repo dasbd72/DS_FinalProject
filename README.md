@@ -10,6 +10,9 @@
 
 `g++ -std=c++17 -o essay-search ./src/*.cpp -lstdc++fs`
 
+### MacOS
+
+`make`
 ## Execute
 
 `./essay-search [data_folder_path] [query.txt] [output.txt]`
