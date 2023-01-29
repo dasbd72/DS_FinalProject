@@ -1,4 +1,4 @@
-# DS FinalProject
+# DS FinalProject Search Engine
 
 ## Compile
 
